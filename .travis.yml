@@ -9,13 +9,12 @@ script:
   - docker run -e CI=true yunhe/client_test npm test
 
 after_success: 
-  - docker build -t yunhe/multi-client ./client
-  - docker build -t yunhe/multi-nginx ./nginx
-  - docker build -t yunhe/multi-server ./server
-  - docker build -t yunhe/multi-worker ./worker
-  - docker login -u "$DOCKER_ID" -p "$DOCKER_PASSWORD"
-  - docker push yunhe/multi-client
-  - docker push yunhe/multi-nginx
-  - docker push yunhe/multi-server
-  - docker push yunhe/multi-worker
-
+  - docker build -t multi-client ./client
+  - docker build -t multi-nginx ./nginx
+  - docker build -t multi-server ./server
+  - docker build -t multi-worker ./worker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdint
+  - docker push vbfdt7/multi-images:multi-client
+  - docker push vbfdt7/multi-images:multi-nginx
+  - docker push vbfdt7/multi-images:multi-server
+  - docker push vbfdt7/multi-images:multi-worker
