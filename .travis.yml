@@ -1,0 +1,15 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t yunhe/client_test -f ./client/Dockerfile.dev ./client
+
+script: 
+  - docker run -e CI=true yunhe/client_test npm test
+
+after_success: 
+  - docker build -t yunhe/multi-client ./client
+  - docker build -t yunhe/multi-nginx ./nginx
+  - docker build -t yunhe/multi-server ./server
+  - docker build -t yunhe/multi-worker ./worker
