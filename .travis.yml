@@ -13,3 +13,9 @@ after_success:
   - docker build -t yunhe/multi-nginx ./nginx
   - docker build -t yunhe/multi-server ./server
   - docker build -t yunhe/multi-worker ./worker
+  - docker login -u "$DOCKER_ID" -p "$DOCKER_PASSWORD"
+  - docker push yunhe/multi-client
+  - docker push yunhe/multi-nginx
+  - docker push yunhe/multi-server
+  - docker push yunhe/multi-worker
+
