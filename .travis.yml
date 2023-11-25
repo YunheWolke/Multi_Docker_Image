@@ -3,18 +3,18 @@ services:
   - docker
 
 before_install:
-  - docker build -t yunhe/client_test -f ./client/Dockerfile.dev ./client
+  - docker build -t vbfdt7/client_test -f ./client/Dockerfile.dev ./client
 
 script: 
-  - docker run -e CI=true yunhe/client_test npm test
+  - docker run -e CI=true vbfdt7/client_test npm test
 
-after_success: 
-  - docker build -t multi-client ./client
-  - docker build -t multi-nginx ./nginx
-  - docker build -t multi-server ./server
-  - docker build -t multi-worker ./worker
+after_success:
+  - docker build -t vbfdt7/multi_client:1.0.0 ./client
+  - docker build -t vbfdt7/multi_nginx:1.0.0 ./nginx
+  - docker build -t vbfdt7/multi_server:1.0.0 ./server
+  - docker build -t vbfdt7/multi_worker:1.0.0 ./worker
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  - docker push vbfdt7/multi-images:multi-client
-  - docker push vbfdt7/multi-images:multi-nginx
-  - docker push vbfdt7/multi-images:multi-server
-  - docker push vbfdt7/multi-images:multi-worker
+  - docker push vbfdt7/multi_client:1.0.0
+  - docker push vbfdt7/multi_nginx:1.0.0
+  - docker push vbfdt7/multi_server:1.0.0
+  - docker push vbfdt7/multi_worker:1.0.0
