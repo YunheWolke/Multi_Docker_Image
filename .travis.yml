@@ -9,12 +9,24 @@ script:
   - docker run -e CI=true vbfdt7/client_test npm test
 
 after_success:
-  - docker build -t vbfdt7/multi_client:1.0.0 ./client
-  - docker build -t vbfdt7/multi_nginx:1.0.0 ./nginx
-  - docker build -t vbfdt7/multi_server:1.0.0 ./server
-  - docker build -t vbfdt7/multi_worker:1.0.0 ./worker
+  - docker build -t vbfdt7/multi_client ./client
+  - docker build -t vbfdt7/multi_nginx ./nginx
+  - docker build -t vbfdt7/multi_server ./server
+  - docker build -t vbfdt7/multi_worker ./worker
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  - docker push vbfdt7/multi_client:1.0.0
-  - docker push vbfdt7/multi_nginx:1.0.0
-  - docker push vbfdt7/multi_server:1.0.0
-  - docker push vbfdt7/multi_worker:1.0.0
+  - docker push vbfdt7/multi_client
+  - docker push vbfdt7/multi_nginx
+  - docker push vbfdt7/multi_server
+  - docker push vbfdt7/multi_worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: "eu-central-1"
+  app: "docker-yunhe"
+  env: "Docker-yunhe-env"
+  bucket_name: "elasticbeanstalk-eu-central-1-383999818120"
+  bucket_path: "docker-multi"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET
